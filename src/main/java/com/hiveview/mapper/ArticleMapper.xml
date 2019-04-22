@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hiveview.dao.IArticleDao" >
+  <resultMap id="BaseResultMap" type="com.hiveview.entity.Article" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="class_id" property="classId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="page_view" property="pageView" jdbcType="INTEGER" />
+    <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="categoryName" property="categoryName" jdbcType="VARCHAR" />
+    <result column="picture" property="picture" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hiveview.entity.Article" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, class_id, status, add_time, page_view, operator_id, update_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from j_article
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from j_article
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hiveview.entity.Article" >
+    insert into j_article (id, title, class_id, 
+      status, add_time, page_view,
+      operator_id, update_time, content
+      )
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{classId,jdbcType=BIGINT}, 
+      #{status,jdbcType=TINYINT}, #{addTime,jdbcType=TIMESTAMP}, #{pageView,jdbcType=INTEGER},
+      #{operatorId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hiveview.entity.Article" >
+    insert into j_article
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="pageView != null" >
+        page_view,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pageView != null" >
+        #{pageView,jdbcType=INTEGER},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hiveview.entity.Article" >
+    update j_article
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pageView != null" >
+        page_view = #{pageView,jdbcType=INTEGER},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hiveview.entity.Article" >
+    update j_article
+    set title = #{title,jdbcType=VARCHAR},
+      class_id = #{classId,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      page_view = #{pageView,jdbcType=INTEGER},
+      operator_id = #{operatorId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hiveview.entity.Article" >
+    update j_article
+    set title = #{title,jdbcType=VARCHAR},
+      class_id = #{classId,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      page_view = #{pageView,jdbcType=INTEGER},
+      operator_id = #{operatorId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="getList" resultMap="ResultMapWithBLOBs" parameterType="com.hiveview.entity.Article" >
+        SELECT
+        a.id,
+        a.title,
+        a.class_id,
+        a.status,
+        a.add_time,
+        a.page_view,
+        a.operator_id,
+        a.update_time,
+        a.content,
+        a.picture,
+        u.user_name
+--     ,c.name as categoryName
+        FROM j_article a LEFT JOIN sys_user u on a.operator_id = u.sys_user_id
+--         LEFT JOIN j_class c on c.id = a.class_id
+      <where>
+        <if test="title != null" >
+          a.title like  CONCAT('%',#{title,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="classId != null" >
+          AND a.class_id = #{classId,jdbcType=BIGINT}
+        </if>
+        <if test="status != null" >
+          AND  a.status = #{status,jdbcType=TINYINT}
+        </if>
+        <if test="addTime != null" >
+          AND a.add_time = #{addTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pageView != null" >
+          AND  a.page_view = #{pageView,jdbcType=INTEGER}
+        </if>
+        <if test="operatorId != null" >
+          AND  a.operator_id = #{operatorId,jdbcType=INTEGER}
+        </if>
+      </where>
+  </select>
+  <select id="getRecommendList" resultMap="ResultMapWithBLOBs" parameterType="com.hiveview.entity.Article" >
+        SELECT
+        a.id,
+        a.title,
+        a.class_id,
+        a.status,
+        a.add_time,
+        a.page_view,
+        a.operator_id,
+        a.update_time,
+        a.content,
+        a.picture
+        FROM j_article a
+      <where>
+        <if test="title != null" >
+          a.title like  CONCAT('%',#{title,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="classId != null" >
+          AND a.class_id = #{classId,jdbcType=BIGINT}
+        </if>
+        <if test="status != null" >
+          AND  a.status = #{status,jdbcType=TINYINT}
+        </if>
+        <if test="addTime != null" >
+          AND a.add_time = #{addTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pageView != null" >
+          AND  a.page_view = #{pageView,jdbcType=INTEGER}
+        </if>
+        <if test="operatorId != null" >
+          AND  a.operator_id = #{operatorId,jdbcType=INTEGER}
+        </if>
+      </where>
+  </select>
+  <update id="addPageView" parameterType="long" >
+    update j_article
+    set
+      page_view = page_view + 1
+    where id = #{articleId,jdbcType=BIGINT}
+  </update>
+</mapper>

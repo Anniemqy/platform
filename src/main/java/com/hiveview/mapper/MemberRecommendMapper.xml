@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hiveview.dao.IMemberRecommendDao" >
+  <resultMap id="BaseResultMap" type="com.hiveview.entity.MemberRecommend" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="member_id" property="memberId" jdbcType="BIGINT" />
+    <result column="plate" property="plate"  />
+    <result column="recommend_order" property="recommendOrder" jdbcType="INTEGER" />
+    <result column="status" property="status"  />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="type" property="type"  />
+    <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
+    <result column="head_portrait" property="headPortrait"  />
+    <result column="description" property="description"  />
+    <result column="adviser_type" property="adviserType"  />
+    <result column="areaFullName" property="areaFullName"  />
+    <result column="summary" property="summary"  />
+    <result column="logo" property="logo"  />
+    <result column="workAge" property="workAge"  />
+    <result column="qq" property="qq"  />
+    <result column="level" property="level"  />
+    <result column="categoryName" property="categoryName"  />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, member_id, plate, recommend_order, status, add_time, update_time, type, operator_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from j_member_recommend
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from j_member_recommend
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hiveview.entity.MemberRecommend" >
+    insert into j_member_recommend (id, member_id, plate, 
+      recommend_order, status, add_time, 
+      update_time, type, operator_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{memberId,jdbcType=BIGINT}, #{plate}, 
+      #{recommendOrder,jdbcType=INTEGER}, #{status}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{type}, #{operatorId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hiveview.entity.MemberRecommend" >
+    insert into j_member_recommend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="plate != null" >
+        plate,
+      </if>
+      <if test="recommendOrder != null" >
+        recommend_order,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="plate != null" >
+        #{plate},
+      </if>
+      <if test="recommendOrder != null" >
+        #{recommendOrder,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hiveview.entity.MemberRecommend" >
+    update j_member_recommend
+    <set >
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=BIGINT},
+      </if>
+      <if test="plate != null" >
+        plate = #{plate},
+      </if>
+      <if test="recommendOrder != null" >
+        recommend_order = #{recommendOrder,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hiveview.entity.MemberRecommend" >
+    update j_member_recommend
+    set member_id = #{memberId,jdbcType=BIGINT},
+      plate = #{plate},
+      recommend_order = #{recommendOrder,jdbcType=INTEGER},
+      status = #{status},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      type = #{type},
+      operator_id = #{operatorId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getList" resultMap="BaseResultMap" parameterType="com.hiveview.entity.MemberRecommend" >
+    SELECT
+    mr.id,
+    mr.member_id,
+    mr.plate,
+    mr.recommend_order,
+    mr.status,
+    mr.add_time,
+    mr.update_time,
+    mr.type,
+    mr.operator_id,
+    m.name as memberName,
+    c.company_name as companyName,
+    u.user_name as userName
+    FROM j_member_recommend mr INNER JOIN j_member m on mr.member_id = m.id
+    LEFT JOIN j_company c on c.id = m.company_id
+    LEFT JOIN sys_user u on mr.operator_id = u.sys_user_id
+    WHERE m.check_status = 4 and m.status = 1  and m.type = 1
+    <if test="memberName != null" >
+      AND m.name like CONCAT("%",#{memberName,jdbcType=TIMESTAMP},"%")
+    </if>
+    <if test="memberId != null" >
+      AND mr.member_id = #{memberId,jdbcType=BIGINT}
+    </if>
+    <if test="plate != null" >
+      AND mr.plate = #{plate}
+    </if>
+    <if test="recommendOrder != null" >
+      AND  mr.recommend_order = #{recommendOrder,jdbcType=INTEGER}
+    </if>
+    <if test="status != null" >
+      AND mr.status = #{status}
+    </if>
+    <if test="type != null" >
+      AND mr.type = #{type}
+    </if>
+  </select>
+  <select id="getRecommendList" resultMap="BaseResultMap" parameterType="com.hiveview.entity.MemberRecommend" >
+    SELECT
+    mr.id,
+    mr.member_id,
+    mr.plate,
+    mr.recommend_order,
+    mr.status,
+    mr.add_time,
+    mr.update_time,
+    mr.type,
+    mr.operator_id,
+    c.company_name as companyName,
+    c.summary,
+    c.logo,
+    m.name as memberName,
+    m.head_portrait,
+    m.description,
+    m.adviser_type,
+    m.qq,
+    m.level,
+    date_format(now(), '%Y') - date_format(m.work_time, '%Y') AS workAge,
+    a.full_name as areaFullName,
+    cs.name as categoryName
+    FROM j_member_recommend mr INNER JOIN j_member m on mr.member_id = m.id
+                              LEFT JOIN j_company c on c.id = m.company_id
+                            LEFT JOIN  j_area a on a.code = m.area_code
+                        LEFT JOIN j_class cs ON m.adviser_type = cs.code
+    WHERE m.check_status = 4 and m.status = 1 and m.type = 1
+    <if test="memberName != null" >
+      AND m.name like CONCAT("%",#{memberName,jdbcType=TIMESTAMP},"%")
+    </if>
+    <if test="memberId != null" >
+      AND mr.member_id = #{memberId,jdbcType=BIGINT}
+    </if>
+    <if test="plate != null" >
+      AND (mr.plate = #{plate} OR  mr.plate = 1)
+    </if>
+    <if test="recommendOrder != null" >
+      AND  mr.recommend_order = #{recommendOrder,jdbcType=INTEGER}
+    </if>
+    <if test="status != null" >
+      AND mr.status = #{status}
+    </if>
+    <if test="type != null" >
+      AND mr.type = #{type}
+    </if>
+    <if test="adviserType != null" >
+      AND  m.adviser_type like CONCAT(#{adviserType},'%')
+    </if>
+    ORDER BY mr.recommend_order desc ,mr.add_time DESC
+  </select>
+</mapper>

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hiveview.dao.ICategoryDao" >
+  <resultMap id="BaseResultMap" type="com.hiveview.entity.Category" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="TINYINT" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="attribute" property="attribute" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="content" property="content"/>
+    <collection property="attributes" ofType="com.hiveview.entity.Attribute">
+      <result column="classId" property="classId" jdbcType="BIGINT" />
+      <result column="attrName" property="name" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+
+  <resultMap id="BaseCategoryMap" type="com.hiveview.entity.Category" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="TINYINT" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, name, full_name, level, add_time, type, status,
+    attribute,code,content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from j_class
+    where id = #{id,jdbcType=BIGINT}   AND  status != 2
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from j_class
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteCategoryByCode" parameterType="java.lang.String" >
+    delete from j_class
+    where code like  CONCAT(#{code},'%')
+  </delete>
+  <insert id="insert" parameterType="com.hiveview.entity.Category" useGeneratedKeys="true" keyProperty="id">
+    insert into j_class (id, name, full_name, 
+      level,  add_time, type,parent_id)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR},
+      #{level,jdbcType=TINYINT}, now(), #{type,jdbcType=TINYINT},#{parentId})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hiveview.entity.Category" useGeneratedKeys="true" keyProperty="id" >
+    insert into j_class
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="fullName != null" >
+        full_name,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="attribute != null" >
+        attribute,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="parentId != null and parentId != ''" >
+        parent_id
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=TINYINT},
+      </if>
+
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="attribute != null" >
+        #{attribute,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null and parentId != ''" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hiveview.entity.Category" >
+    update j_class
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=TINYINT},
+      </if>
+
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="attribute != null" >
+        attribute = #{attribute,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByCode" parameterType="com.hiveview.entity.Category" >
+    update j_class
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=TINYINT},
+      </if>
+
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="attribute != null" >
+        attribute = #{attribute,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code like  CONCAT(#{code},'%')
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hiveview.entity.Category" >
+    update j_class
+    set name = #{name,jdbcType=VARCHAR},
+      full_name = #{fullName,jdbcType=VARCHAR},
+      level = #{level,jdbcType=TINYINT},
+
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      attribute = #{attribute,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getList" resultMap="BaseResultMap" parameterType="com.hiveview.entity.Category" >
+    select
+    <include refid="Base_Column_List" />
+    from j_class
+    <where>
+      <if test="id != null" >
+        id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="name != null " >
+       AND name like CONCAT('%',#{name},'%')
+      </if>
+      <if test="fullName != null" >
+        AND full_name = #{fullName,jdbcType=VARCHAR}
+      </if>
+      <if test="level != null" >
+        AND level = #{level,jdbcType=TINYINT}
+      </if>
+
+      <if test="type != null" >
+        AND type = #{type,jdbcType=TINYINT}
+      </if>
+      <if test="status != null" >
+        AND status = #{status,jdbcType=TINYINT}
+      </if>
+      <if test="code != null" >
+        AND  code like  CONCAT(#{code},'%')
+      </if>
+      AND  status != 2 ORDER BY code ASC
+    </where>
+  </select>
+  <select id="getCategoryAndAttr" resultMap="BaseResultMap" parameterType="com.hiveview.entity.Category" >
+    select
+      c.id,
+      c.name,
+      c.full_name,
+      c.level,
+      c.add_time,
+      c.type,
+      c.status,
+      c.attribute,
+      c.code,
+      a.name AS attrName,
+      a.class_id as classId
+    FROM j_class c LEFT JOIN j_class_attribute a on c.id= a.class_id
+    <where>
+      <if test="id != null" >
+        c.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="name != null " >
+       AND c.name like CONCAT('%',#{name},'%')
+      </if>
+      <if test="fullName != null" >
+        AND c.full_name = #{fullName,jdbcType=VARCHAR}
+      </if>
+      <if test="level != null" >
+        AND c.level = #{level,jdbcType=TINYINT}
+      </if>
+
+      <if test="type != null" >
+        AND c.type = #{type,jdbcType=TINYINT}
+      </if>
+      <if test="status != null" >
+        AND c.status = #{status,jdbcType=TINYINT}
+      </if>
+      <if test="code != null" >
+        AND  c.code like  CONCAT(#{code},'%')
+      </if>
+      AND  status != 2
+    </where>
+  </select>
+  <select id="getSonCategory" resultMap="BaseResultMap" parameterType="long" >
+    select
+    <include refid="Base_Column_List" />
+    from j_class
+    WHERE  parent_id = #{parentId}   AND  status != 2
+  </select>
+
+    <delete id="batchDelete" parameterType="java.util.List">
+      DELETE FROM j_class WHERE id IN
+      <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </delete>
+
+
+  <select id="getListByCode" parameterType="string" resultMap="BaseCategoryMap">
+    SELECT code,name,level FROM j_class c WHERE c.code LIKE  CONCAT(#{code},'%') AND status !=2 AND c.level > 1
+  </select>
+
+  <select id="get" resultMap="BaseResultMap" parameterType="com.hiveview.entity.Category" >
+    select
+    <include refid="Base_Column_List" />
+    from j_class
+    <where>
+      <if test="id != null" >
+        id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="name != null " >
+        AND name like CONCAT('%',#{name},'%')
+      </if>
+      <if test="fullName != null" >
+        AND full_name = #{fullName,jdbcType=VARCHAR}
+      </if>
+      <if test="level != null" >
+        AND level = #{level,jdbcType=TINYINT}
+      </if>
+
+      <if test="type != null" >
+        AND type = #{type,jdbcType=TINYINT}
+      </if>
+      <if test="status != null" >
+        AND status = #{status,jdbcType=TINYINT}
+      </if>
+      <if test="code != null" >
+        AND  code =#{code}
+      </if>
+      AND  status != 2
+    </where>
+  </select>
+  <select id="checkCategoryNameRepetition" resultType="int" >
+    SELECT count(1) FROM j_class WHERE name = #{name} and type =#{type};
+  </select>
+  <update id="updateSecondLevelOfSonCategoryFullName"  parameterType="com.hiveview.entity.Category"  >
+    UPDATE j_class set full_name = replace(full_name,CONCAT('-',#{oldName},'-'),CONCAT('-',#{name},'-')) WHERE type = #{type} and code LIKE CONCAT(#{code},'%');
+  </update>
+
+</mapper>

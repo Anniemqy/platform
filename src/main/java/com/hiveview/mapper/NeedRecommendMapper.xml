@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hiveview.dao.INeedRecommendDao" >
+  <resultMap id="BaseResultMap" type="com.hiveview.entity.NeedRecommend" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="need_id" property="needId" jdbcType="BIGINT" />
+    <result column="plate" property="plate" />
+    <result column="recommend_order" property="recommendOrder" jdbcType="INTEGER" />
+    <result column="status" property="status" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" />
+    <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, need_id, plate, recommend_order, status, add_time, update_time, type, operator_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from j_need_recommend
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from j_need_recommend
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hiveview.entity.NeedRecommend" >
+    insert into j_need_recommend (id, need_id, plate, 
+      recommend_order, status, add_time, 
+      update_time, type, operator_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{needId,jdbcType=BIGINT}, #{plate}, 
+      #{recommendOrder,jdbcType=INTEGER}, #{status}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{type}, #{operatorId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hiveview.entity.NeedRecommend" >
+    insert into j_need_recommend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="needId != null" >
+        need_id,
+      </if>
+      <if test="plate != null" >
+        plate,
+      </if>
+      <if test="recommendOrder != null" >
+        recommend_order,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="needId != null" >
+        #{needId,jdbcType=BIGINT},
+      </if>
+      <if test="plate != null" >
+        #{plate},
+      </if>
+      <if test="recommendOrder != null" >
+        #{recommendOrder,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hiveview.entity.NeedRecommend" >
+    update j_need_recommend
+    <set >
+      <if test="needId != null" >
+        need_id = #{needId,jdbcType=BIGINT},
+      </if>
+      <if test="plate != null" >
+        plate = #{plate},
+      </if>
+      <if test="recommendOrder != null" >
+        recommend_order = #{recommendOrder,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hiveview.entity.NeedRecommend" >
+    update j_need_recommend
+    set need_id = #{needId,jdbcType=BIGINT},
+      plate = #{plate},
+      recommend_order = #{recommendOrder,jdbcType=INTEGER},
+      status = #{status},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      type = #{type},
+      operator_id = #{operatorId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="getList" resultMap="BaseResultMap" parameterType="com.hiveview.entity.NeedRecommend" >
+    SELECT
+    nr.id,
+    nr.need_id,
+    nr.plate,
+    nr.recommend_order,
+    nr.status,
+    nr.add_time,
+    nr.update_time,
+    nr.type,
+    nr.operator_id,
+    n.title as needName,
+    c.name as categoryName,
+    u.user_name as userName
+    FROM j_need_recommend nr INNER JOIN j_need n on nr.need_id = n.id
+    LEFT JOIN j_class c on c.id = n.class_id
+    LEFT JOIN sys_user u on nr.operator_id = u.sys_user_id
+    WHERE n.status = 4
+    <if test="needName != null" >
+      AND n.title like CONCAT("%",#{needName,jdbcType=TIMESTAMP},"%")
+    </if>
+    <if test="needId != null" >
+      AND nr.need_id = #{needId,jdbcType=BIGINT}
+    </if>
+    <if test="plate != null" >
+      AND nr.plate = #{plate}
+    </if>
+    <if test="recommendOrder != null" >
+      AND  nr.recommend_order = #{recommendOrder,jdbcType=INTEGER}
+    </if>
+    <if test="status != null" >
+      AND nr.status = #{status}
+    </if>
+    <if test="type != null" >
+      AND nr.type = #{type}
+    </if>
+    ORDER BY nr.recommend_order desc ,nr.add_time DESC
+  </select>
+</mapper>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hiveview.dao.IApprovalRecordDao" >
+  <resultMap id="BaseResultMap" type="com.hiveview.entity.ApprovalRecord" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="relate_id" property="relateId" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="operation_id" property="operationId" jdbcType="BIGINT" />
+    <result column="operationName" property="operationName" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, relate_id, type, comment, operation_id, add_time, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from j_approval_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from j_approval_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hiveview.entity.ApprovalRecord" >
+    insert into j_approval_record (id, relate_id, type, 
+      comment, operation_id, add_time, 
+      status)
+    values (#{id,jdbcType=BIGINT}, #{relateId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, 
+      #{comment,jdbcType=VARCHAR}, #{operationId,jdbcType=BIGINT}, now(),
+      #{status,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hiveview.entity.ApprovalRecord" >
+    insert into j_approval_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="relateId != null" >
+        relate_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="operationId != null" >
+        operation_id,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="relateId != null" >
+        #{relateId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="operationId != null" >
+        #{operationId,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hiveview.entity.ApprovalRecord" >
+    update j_approval_record
+    <set >
+      <if test="relateId != null" >
+        relate_id = #{relateId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="operationId != null" >
+        operation_id = #{operationId,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hiveview.entity.ApprovalRecord" >
+    update j_approval_record
+    set relate_id = #{relateId,jdbcType=BIGINT},
+      type = #{type,jdbcType=TINYINT},
+      comment = #{comment,jdbcType=VARCHAR},
+      operation_id = #{operationId,jdbcType=BIGINT},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="getList" resultMap="BaseResultMap" parameterType="com.hiveview.entity.ApprovalRecord" >
+    SELECT
+    a.id,
+    a.relate_id,
+    a.type,
+    a.comment,
+    a.operation_id,
+    a.add_time,
+    a.status,
+    u.user_name as operationName
+    FROM j_approval_record a LEFT JOIN sys_user u on a.operation_id = u.sys_user_id
+    <where>
+      <if test="relateId != null" >
+          a.relate_id = #{relateId,jdbcType=BIGINT}
+      </if>
+      <if test="type != null" >
+        AND  a.type = #{type,jdbcType=TINYINT}
+      </if>
+      <if test="comment != null" >
+        AND  a.comment = #{comment,jdbcType=VARCHAR}
+      </if>
+      <if test="operationId != null" >
+        AND  a.operation_id = #{operationId,jdbcType=BIGINT}
+      </if>
+      <if test="status != null" >
+        AND  a.status = #{status,jdbcType=TINYINT}
+      </if>
+    </where>
+    order by add_time desc
+  </select>
+</mapper>

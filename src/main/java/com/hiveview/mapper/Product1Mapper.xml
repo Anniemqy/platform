@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hiveview.dao.IProduct1Dao" >
+  <resultMap id="BaseResultMap" type="com.hiveview.entity.Product1" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="picture" property="picture" jdbcType="VARCHAR" />
+    <result column="class_id" property="classId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, picture, class_id
+  </sql>
+  <insert id="addProduct" parameterType="com.hiveview.entity.Product1" useGeneratedKeys="true" keyProperty="id">
+    insert into j_product (id, title, picture,
+      class_id, content, member_id,
+      company_id, status, hits,
+      add_time, update_time, type,
+      attribute, keywords,market_price,real_price)
+    values (#{id}, #{title}, #{picture}, #{classId}, #{content}, #{memberId},
+       #{companyId}, #{status}, #{hits}, #{addTime}, #{updateTime}, #{type},
+       #{attribute}, #{keywords}, #{marketPrice}, #{realPrice})
+  </insert>
+  <select id="getProduct1One" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from j_product
+    <where>
+      <if test="productId != null" >
+        id = #{productId,jdbcType=BIGINT}
+      </if>
+    </where>
+  </select>
+</mapper>
